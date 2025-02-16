@@ -1,3 +1,7 @@
+#/bin/sh
+
+set -x
+
 /opt/homebrew/opt/llvm/bin/clang \
   --target=wasm32 -O2 -msimd128 \
   -nostdlib \
