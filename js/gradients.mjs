@@ -21,14 +21,6 @@ export function canvas_gradient(canvas, colour_start, colour_end) {
   // Add a page for the stack..?
   const required_pages = 1 + Math.ceil(required_bytes / page_size_bytes);
 
-  console.log('canvas width:', width);
-  console.log('canvas height:', height);
-  console.log('start:', colour_start);
-  console.log('end:', colour_end);
-  console.log('required bytes:', required_bytes);
-  console.log('required pages:', required_pages);
-  console.log('spare bytes:', (page_size_bytes * required_pages) - required_bytes);
-
   const memory = new WebAssembly.Memory({
     initial: required_pages,
   });
@@ -48,7 +40,6 @@ export function canvas_gradient(canvas, colour_start, colour_end) {
       colour_end.b & 0xFF,
       colour_end.a & 0xFF
     );
-    console.log('bytes written:', bytes_written);
     if (bytes_written == required_bytes) {
       const clamped_array = new Uint8ClampedArray(memory.buffer, 0, required_bytes);
       const image_data = new ImageData(clamped_array, width, height);

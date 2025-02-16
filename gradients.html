@@ -7,11 +7,29 @@
 <title>Wasm Colour Gradient</title>
 </head>
 <body>
-  <div> 
+  <div>
+    <canvas id="dawn_canvas" width="640" height="480">
+  </div>
+  <div>
+    <canvas id="sunrise_canvas" width="640" height="480">
+  </div>
+  <div>
+    <canvas id="morning_canvas" width="640" height="480">
+  </div>
+  <div>
+    <canvas id="midday_canvas" width="640" height="480">
+  </div>
+  <div>
+    <canvas id="afternoon_canvas" width="640" height="480">
+  </div>
+  <div>
     <canvas id="sunset_canvas" width="640" height="480">
   </div>
-  <div> 
+  <div>
     <canvas id="dusk_canvas" width="640" height="480">
+  </div>
+  <div>
+    <canvas id="night_canvas" width="640" height="480">
   </div>
   <script type="module">
     import * as Colour from "./js/gradients.mjs";
@@ -21,9 +39,39 @@
       Colour.canvas_gradient(canvas, colours[0], colours[1]);
     }
 
+    const dawn_colours = [
+      new Colour.RGBA(53, 69, 118, 255),
+      new Colour.RGBA(71, 119, 156, 255),
+    ];
+    draw_to_canvas('dawn_canvas', dawn_colours);
+
+    const sunrise_colours = [
+      new Colour.RGBA(83, 105, 160, 255),
+      new Colour.RGBA(188, 180, 144, 255),
+    ];
+    draw_to_canvas('sunrise_canvas', sunrise_colours);
+
+    const morning_colours = [
+      new Colour.RGBA(80, 124, 175, 255),
+      new Colour.RGBA(172, 209, 188, 255),
+    ];
+    draw_to_canvas('morning_canvas', morning_colours);
+
+    const midday_colours = [
+      new Colour.RGBA(70, 117, 168, 255),
+      new Colour.RGBA(150, 209, 202, 255),
+    ];
+    draw_to_canvas('midday_canvas', midday_colours);
+
+    const afternoon_colours = [
+      new Colour.RGBA(78, 119, 156, 255),
+      new Colour.RGBA(232, 194, 129, 255),
+    ];
+    draw_to_canvas('afternoon_canvas', afternoon_colours);
+
     const sunset_colours = [
       new Colour.RGBA(99, 137, 159, 255),
-      new Colour.RGBA(232, 194, 129, 255),
+      new Colour.RGBA(223, 157, 134, 255),
     ];
     draw_to_canvas('sunset_canvas', sunset_colours);
 
@@ -32,5 +80,11 @@
       new Colour.RGBA(120, 150, 160, 255),
     ];
     draw_to_canvas('dusk_canvas', dusk_colours);
+
+    const night_colours = [
+      new Colour.RGBA(37, 48, 95, 255),
+      new Colour.RGBA(49, 101, 148, 255),
+    ];
+    draw_to_canvas('night_canvas', night_colours);
   </script>
 </body>
