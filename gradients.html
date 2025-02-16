@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width">
+<meta name="description" content="Creating colour gradient with wasm">
+<title>Wasm Colour Gradient</title>
+</head>
+<body>
+  <div> 
+    <canvas id="sunset_canvas" width="640" height="480">
+  </div>
+  <div> 
+    <canvas id="dusk_canvas" width="640" height="480">
+  </div>
+  <script type="module">
+    import * as Colour from "./js/gradients.mjs";
+
+    function draw_to_canvas(canvas_name, colours) {
+      const canvas = document.getElementById(canvas_name);
+      Colour.canvas_gradient(canvas, colours[0], colours[1]);
+    }
+
+    const sunset_colours = [
+      new Colour.RGBA(99, 137, 159, 255),
+      new Colour.RGBA(232, 194, 129, 255),
+    ];
+    draw_to_canvas('sunset_canvas', sunset_colours);
+
+    const dusk_colours = [
+      new Colour.RGBA(60, 83, 131, 255),
+      new Colour.RGBA(120, 150, 160, 255),
+    ];
+    draw_to_canvas('dusk_canvas', dusk_colours);
+  </script>
+</body>

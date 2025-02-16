@@ -12,20 +12,31 @@ export class RGBA {
   get a() { return this._a; }
 }
 
-export function colour_gradient(width, height, colour_start, colour_end) {
+export function canvas_gradient(canvas, colour_start, colour_end) {
+  const width = canvas.width;
+  const height = canvas.height;
   const page_size_bytes = 64 * 1024;
-  const required_bytes = width * height * 4;
-  // Plus some stack space..?
-  const required_pages = Math.ceil(required_bytes / page_size_bytes);
+  const channels = 4;
+  const required_bytes = width * height * channels;
+  // Add a page for the stack..?
+  const required_pages = 1 + Math.ceil(required_bytes / page_size_bytes);
+
+  console.log('canvas width:', width);
+  console.log('canvas height:', height);
+  console.log('start:', colour_start);
+  console.log('end:', colour_end);
+  console.log('required bytes:', required_bytes);
+  console.log('required pages:', required_pages);
+  console.log('spare bytes:', (page_size_bytes * required_pages) - required_bytes);
 
   const memory = new WebAssembly.Memory({
     initial: required_pages,
   });
 
-  WebAssembly.instantiateStreaming(fetch("gradients.wasm"), {
+  WebAssembly.instantiateStreaming(fetch("../wasm/gradients.wasm"), {
     env: { memory: memory },
   }).then((obj) => {
-    obj.instance.export.linear_gradient(
+    const bytes_written = obj.instance.exports.linear_gradient(
       width & 0xFFFFFFFF,
       height & 0xFFFFFFFF,
       colour_start.r & 0xFF,
@@ -37,11 +48,12 @@ export function colour_gradient(width, height, colour_start, colour_end) {
       colour_end.b & 0xFF,
       colour_end.a & 0xFF
     );
-    const summands = new DataView(memory.buffer);
-    for (let i = 0; i < 10; i++) {
-      summands.setUint32(i * 4, i, true); // WebAssembly is little endian
+    console.log('bytes written:', bytes_written);
+    if (bytes_written == required_bytes) {
+      const clamped_array = new Uint8ClampedArray(memory.buffer, 0, required_bytes);
+      const image_data = new ImageData(clamped_array, width, height);
+      const context = canvas.getContext('2d');
+      context.putImageData(image_data, 0, 0);
     }
-    const sum = obj.instance.exports.accumulate(0, 10);
-    console.log(sum);
   });
 }
